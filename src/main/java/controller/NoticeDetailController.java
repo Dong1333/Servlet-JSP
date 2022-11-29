@@ -82,6 +82,8 @@ public class NoticeDetailController extends HttpServlet{
 			}
 			
 			
-			request.getRequestDispatcher("/notice/detail.jsp").forward(request, response);
+			request
+			.getRequestDispatcher("/notice/detail.jsp")
+			.forward(request, response);
 	}
 }

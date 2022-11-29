@@ -1,20 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.sql.*" %>
-<% 
-	String sUrl = "jdbc:mysql://localhost:3306/firstDB";
-	String sUser = "root";
-	String sPwd = "12341234";
-	
-	String sSql = "SELECT * FROM NOTICE;"; 
-	
-	Class.forName("com.mysql.jdbc.Driver");
-	Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
-	
-	Statement st = MyConn.createStatement();
-	ResultSet rs = st.executeQuery(sSql);
-	
-%>
+<%@ page import = "java.util.ArrayList" %>
+<%@ page import = "java.util.Date" %>
+<%@ page import = "java.util.List" %>
+<%@ page import = "entity.Notice" %>
 <!DOCTYPE html>
 <html>
 
@@ -188,17 +177,20 @@
 					</thead>
 					<tbody>
 							
-				<%while(rs.next()) {%>
+					<%
+						List<Notice> list = (List<Notice>)request.getAttribute("list");
+						for( Notice n : list) {
+							pageContext.setAttribute("n", n);
+							
+					%>
 					<tr>
-						<td><%=rs.getInt("ID") %></td>
-						<td class="title indent text-align-left"><a href="detail?id=<%=rs.getInt("ID") %>"><%=rs.getString("TITLE") %></a></td>
-						<td><%=rs.getString("WRITER_ID") %></td>
-						<td>
-							<%=rs.getDate("REGDATE") %>		
-						</td>
-						<td><%=rs.getInt("HIT") %></td>
+						<td>${n.id}</td>
+						<td class="title indent text-align-left"><a href="detail?id=">${n.title}</a></td>
+						<td>${n.writeid}</td>
+						<td>${n.regdate}</td>
+						<td>${n.hit}</td>
 					</tr>
-				<%}%>	
+					<% }  %>
 	
 					</tbody>
 				</table>
@@ -272,8 +264,3 @@
     </body>
     
     </html>
-  <%
-    rs.close();
-    st.close();
-    MyConn.close();
-   %>
