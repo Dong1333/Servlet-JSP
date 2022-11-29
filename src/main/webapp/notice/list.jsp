@@ -1,5 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import = "java.sql.*" %>
+<% 
+	String sUrl = "jdbc:mysql://localhost:3306/firstDB";
+	String sUser = "root";
+	String sPwd = "12341234";
+	
+	String sSql = "SELECT * FROM NOTICE;"; 
+	
+	Class.forName("com.mysql.jdbc.Driver");
+	Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
+	
+	Statement st = MyConn.createStatement();
+	ResultSet rs = st.executeQuery(sSql);
+	
+%>
 <!DOCTYPE html>
 <html>
 
@@ -19,12 +34,12 @@
             background: url("../../images/customer/visual.png") no-repeat center;
         }
     </style>
-</head>
+</head> 
 
 <body>
     <!-- header 부분 -->
 
-	<header id="header">
+    <header id="header">
         
         <div class="content-container">
             <!-- ---------------------------<header>--------------------------------------- -->
@@ -128,77 +143,94 @@
 			</aside>
 			<!-- --------------------------- main --------------------------------------- -->
 
+
+
+		<main class="main">
+			<h2 class="main title">공지사항</h2>
 			
+			<div class="breadcrumb">
+				<h3 class="hidden">경로</h3>
+				<ul>
+					<li>home</li>
+					<li>고객센터</li>
+					<li>공지사항</li>
+				</ul>
+			</div>
+			
+			<div class="search-form margin-top first align-right">
+				<h3 class="hidden">공지사항 검색폼</h3>
+				<form class="table-form">
+					<fieldset>
+						<legend class="hidden">공지사항 검색 필드</legend>
+						<label class="hidden">검색분류</label>
+						<select name="f">
+							<option  value="title">제목</option>
+							<option  value="writerId">작성자</option>
+						</select> 
+						<label class="hidden">검색어</label>
+						<input type="text" name="q" value=""/>
+						<input class="btn btn-search" type="submit" value="검색" />
+					</fieldset>
+				</form>
+			</div>
+			
+			<div class="notice margin-top">
+				<h3 class="hidden">공지사항 목록</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="w60">번호</th>
+							<th class="expand">제목</th>
+							<th class="w100">작성자</th>
+							<th class="w100">작성일</th>
+							<th class="w60">조회수</th>
+						</tr>
+					</thead>
+					<tbody>
+							
+				<%while(rs.next()) {%>
+					<tr>
+						<td><%=rs.getInt("ID") %></td>
+						<td class="title indent text-align-left"><a href="detail?id=<%=rs.getInt("ID") %>"><%=rs.getString("TITLE") %></a></td>
+						<td><%=rs.getString("WRITER_ID") %></td>
+						<td>
+							<%=rs.getDate("REGDATE") %>		
+						</td>
+						<td><%=rs.getInt("HIT") %></td>
+					</tr>
+				<%}%>	
+	
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="indexer margin-top align-right">
+				<h3 class="hidden">현재 페이지</h3>
+				<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+			</div>
 
-
-			<main>
-				<h2 class="main title">공지사항</h2>
+			<div class="margin-top align-center pager">	
+		
+	<div>
+		
+		
+		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		
+	</div>
+	<ul class="-list- center">
+		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
 				
-				<div class="breadcrumb">
-					<h3 class="hidden">breadlet</h3>
-					<ul>
-						<li>home</li>
-						<li>고객센터</li>
-						<li>공지사항</li>
-					</ul>
-				</div>
-				
-				<div class="margin-top first">
-						<h3 class="hidden">공지사항 내용</h3>
-						<table class="table">
-							<tbody>
-								<tr>
-									<th>제목</th>
-									<td class="text-align-left text-indent text-strong text-orange" colspan="3"><%=request.getAttribute("title")%></td>
-								</tr>
-								<tr>
-									<th>작성일</th>
-									<td class="text-align-left text-indent" colspan="3"><%=request.getAttribute("regdate") %></td>
-								</tr>
-								<tr>
-									<th>작성자</th>
-									<td><%=request.getAttribute("writeid")%></td>
-									<th>조회수</th>
-									<td><%=request.getAttribute("hit")%></td>
-								</tr>
-								<tr>
-									<th>첨부파일</th>
-									<td colspan="3"><%=request.getAttribute("files") %></td>
-								</tr>
-								<tr class="content">
-									<td colspan="4"><%=request.getAttribute("content") %></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<div class="margin-top text-align-center">
-						<a class="btn btn-list" href="list.html">목록</a>
-					</div>
-					
-					<div class="margin-top">
-						<table class="table border-top-default">
-							<tbody>
-								
-								<tr>
-									<th>다음글</th>
-									<td colspan="3"  class="text-align-left text-indent">다음글이 없습니다.</td>
-								</tr>
-								
-									
-								
-								
-								<tr>
-									<th>이전글</th>
-									<td colspan="3"  class="text-align-left text-indent"><a class="text-blue text-strong" href="">스프링 DI 예제 코드</a></td>
-								</tr>
-								
-								
-							</tbody>
-						</table>
-					</div>			
-					
-			</main>		
+	</ul>
+	<div>
+		
+		
+			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
+		
+	</div>
+	
+			</div>
+		</main>
+		
 			
 		</div>
 	</div>
@@ -240,3 +272,8 @@
     </body>
     
     </html>
+  <%
+    rs.close();
+    st.close();
+    MyConn.close();
+   %>
