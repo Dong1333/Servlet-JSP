@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entity.Notice;
+
 @WebServlet("/notice/detail")
 public class NoticeDetailController extends HttpServlet{
 	@Override
@@ -51,6 +53,20 @@ public class NoticeDetailController extends HttpServlet{
 				request.setAttribute("files", files);
 				request.setAttribute("content", content);
 				
+				Notice notice = new Notice(
+							id, 
+							title,
+							writeid,
+							regdate,
+							hit,
+							files,
+							content
+						);
+				
+				request.setAttribute("n", notice);
+				
+				
+					
 			    
 			    
 			 	rs.close();
