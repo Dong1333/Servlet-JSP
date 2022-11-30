@@ -4,6 +4,7 @@
 <%@ page import = "java.util.Date" %>
 <%@ page import = "java.util.List" %>
 <%@ page import = "entity.Notice" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -177,12 +178,10 @@
 					</thead>
 					<tbody>
 							
-					<%
-						List<Notice> list = (List<Notice>)request.getAttribute("list");
+					<%-- <%List<Notice> list = (List<Notice>)request.getAttribute("list");
 						for( Notice n : list) {
-							pageContext.setAttribute("n", n);
-							
-					%>
+							pageContext.setAttribute("n", n);%> --%>
+					<c:forEach var = "n" items = "${list}" begin="1" end="2">
 					<tr>
 						<td>${n.id}</td>
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title}</a></td>
@@ -190,7 +189,8 @@
 						<td>${n.regdate}</td>
 						<td>${n.hit}</td>
 					</tr>
-					<% }  %>
+					</c:forEach>
+					<%-- <% }  %> --%>
 	
 					</tbody>
 				</table>

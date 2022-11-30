@@ -39,7 +39,7 @@ public class NoticeListController extends HttpServlet {
 			ResultSet rs = st.executeQuery(sSql);
 			
 			// model 변수 생성
-			rs.next();
+			while(rs.next()) {
 			int id = rs.getInt("ID");
 			String title = rs.getString("TITLE"); 
 			String writeid =rs.getString("WRITER_ID"); 
@@ -58,7 +58,7 @@ public class NoticeListController extends HttpServlet {
 					content
 				);
 			list.add(notice);
-
+		}
 		    rs.close();
 		    st.close();
 		    MyConn.close();
