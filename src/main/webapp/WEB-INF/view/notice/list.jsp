@@ -185,7 +185,7 @@
 					%>
 					<tr>
 						<td>${n.id}</td>
-						<td class="title indent text-align-left"><a href="detail?id=">${n.title}</a></td>
+						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title}</a></td>
 						<td>${n.writeid}</td>
 						<td>${n.regdate}</td>
 						<td>${n.hit}</td>

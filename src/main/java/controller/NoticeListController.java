@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import entity.Notice;
 
-// 1번 파일 
 @WebServlet("/notice/list")
 public class NoticeListController extends HttpServlet {
 	@Override
@@ -74,7 +73,7 @@ public class NoticeListController extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		request
-		.getRequestDispatcher("/notice/list.jsp")
+		.getRequestDispatcher("/WEB-INF/view/notice/list.jsp")
 		.forward(request, response);
 
 	}
