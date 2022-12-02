@@ -38,17 +38,25 @@ public class NoticeService {
 	}
 	
 	public Notice getNotice(int id) {
-		
+		String sql = "SELECT * FROM NOTICE WHRER ID=?";
 		return null;
 	}
 
 	public Notice getNextNotice(int id) {
-			
+		String sql = "select * from"
+				+ "	(select ROW_NUMBER() over(order by n.regdate) rownum, n.*"
+				+ "    from ( select *  from notice where regdate >"
+				+ "		(select regdate from notice where id = 3)) n) n2"
+				+ "where rownum = 1";
 			return null;
 		}
 	
 	public Notice getPrevNotice(int id) {
-		
+		String sql = "select * from"
+				+ "	(select ROW_NUMBER() over(order by n.regdate) rownum, n.*"
+				+ "    from ( select *  from notice where regdate <"
+				+ "		(select regdate from notice where id = 3)) n) n2"
+				+ "where rownum = 1";
 		return null;
 	}
 
