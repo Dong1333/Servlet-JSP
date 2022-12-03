@@ -56,7 +56,7 @@ public class NoticeService {
 				+ "	(select ROW_NUMBER() over(order by n.regdate) rownum, n.*"
 				+ "   from ( select *  from notice where regdate <"
 				+ "	(select regdate from notice where id = 3)) n) n2"
-				+ "where rownum = 1";
+				+ "where rownum = 1"; 
 		return null;
 	}
 
