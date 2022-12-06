@@ -200,7 +200,7 @@
 			
 			<div class="indexer margin-top align-right">
 				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+				<div><span class="text-orange text-strong">${(empty param.p == null)?1:param.p}</span> / 1 pages</div>
 			</div>
 
 			<div class="margin-top align-center pager">	
@@ -219,8 +219,10 @@
 	</div>
 
 	<ul class="-list- center">
+	<!--페이지가 비어있으면 1이라는 곳으로 매핑될 것이고 현재 반복되고 있는 번호하고 같으면 하이라이트(오렌지 색) 시킨다   -->
+		<c:set var="page" value="${(param.p == null)?1:param.p}"/>
 		<c:forEach var="i" begin="0" end="4">
-		<li><a class="-text- orange bold" href="?p=${startNum+i}&f=${param.f}&q=${param.q}">${startNum+i}</a></li>
+		<li><a class="-text- ${page==(startNum+i)?'orange':'' }bold" href="?p=${startNum+i}&f=${param.f}&q=${param.q}">${startNum+i}</a></li>
 		</c:forEach>		
 	</ul>
 	<div>
