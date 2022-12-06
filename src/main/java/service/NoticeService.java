@@ -74,6 +74,7 @@ public class NoticeService {
 					files,
 					content
 				);
+			// 목록에 데이터 채우기
 			list.add(notice);
 		}
 		    rs.close();
@@ -95,35 +96,226 @@ public class NoticeService {
 		return getNoticeCount("title", "");
 	}
 	
-	public int getNoticeCount(String filed, String query) {
-		String sql = "SELECT * FROM("
+	// 현재 게시글 목록을 가져왔다면 그 목록에서 페이징 되지 않는 레코드의 개수를 구하는 함수
+	public int getNoticeCount(String field, String query) {
+		
+		int count = 0;
+		
+		String sql = "SELECT COUNT(ID) COUNT FROM("
 				+ "	SELECT ROW_NUMBER() OVER(ORDER BY ID DESC) AS ROWNUM,"
-				+ "	NOTICE.* FROM NOTICE) TMP"
-				+ "WHERE ROWNUM BETWEEN 1 AND 5";
-		return 0;
+				+ " NOTICE.* FROM NOTICE WHERE "+field+" LIKE ? ) TMP ";
+		
+		String sUrl = "jdbc:mysql://localhost:3306/firstDB";
+		String sUser = "root";
+		String sPwd = "12341234"; 
+		 
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
+			
+			PreparedStatement st = MyConn.prepareStatement(sql);
+			
+			st.setString(1, "%"+query+"%");
+
+			
+			ResultSet rs = st.executeQuery();
+		
+			rs.getInt("count"); // 쿼리문에 지정해준 COUNT * 대소문자 구분이 없다.
+			
+		    rs.close();
+		    st.close();
+		    MyConn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return count;
 	}
 	
 	public Notice getNotice(int id) {
+		Notice notice = null;
+		
 		String sql = "SELECT * FROM NOTICE WHRER ID=?";
-		return null;
+		
+		String sUrl = "jdbc:mysql://localhost:3306/firstDB";
+		String sUser = "root";
+		String sPwd = "12341234";
+		 
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
+			
+			PreparedStatement st = MyConn.prepareStatement(sql);
+			
+			st.setInt(1, id);
+
+			
+			ResultSet rs = st.executeQuery();
+			
+			// 하나만 읽기 떄문에 while 대신 if 사용
+			if(rs.next()) {
+			int nid = rs.getInt("ID");
+			String title = rs.getString("TITLE"); 
+			String writeid =rs.getString("WRITER_ID"); 
+			Date regdate =rs.getDate("REGDATE");
+			String hit =rs.getString("HIT"); 
+			String files =rs.getString("FILES");	
+			String content =rs.getString("CONTENT"); 
+			
+			// 만들어진 객체를 return으로 반환
+			notice = new Notice(
+					nid, 
+					title,
+					writeid,
+					regdate,
+					hit,
+					files,
+					content
+				);
+		}
+		    rs.close();
+		    st.close();
+		    MyConn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return notice;
 	}
 
 	public Notice getNextNotice(int id) {
+		Notice notice = null;
+		
 		String sql = "select * from"
 				+ "	(select ROW_NUMBER() over(order by n.regdate) rownum, n.*"
 				+ "    from ( select *  from notice where regdate >"
-				+ "		(select regdate from notice where id = 3)) n) n2"
+				+ "		(select regdate from notice where id = ?)) n) n2"
 				+ "where rownum = 1";
+		
+
+		String sUrl = "jdbc:mysql://localhost:3306/firstDB";
+		String sUser = "root";
+		String sPwd = "12341234";
+		 
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
+			
+			PreparedStatement st = MyConn.prepareStatement(sql);
+			
+			st.setInt(1, id);
+
+			
+			ResultSet rs = st.executeQuery();
+			
+			// 하나만 읽기 떄문에 while 대신 if 사용
+			if(rs.next()) {
+			int nid = rs.getInt("ID");
+			String title = rs.getString("TITLE"); 
+			String writeid =rs.getString("WRITER_ID"); 
+			Date regdate =rs.getDate("REGDATE");
+			String hit =rs.getString("HIT"); 
+			String files =rs.getString("FILES");	
+			String content =rs.getString("CONTENT"); 
+			
+			// 만들어진 객체를 return으로 반환
+			notice = new Notice(
+					nid, 
+					title,
+					writeid,
+					regdate,
+					hit,
+					files,
+					content
+				);
+		}
+		    rs.close();
+		    st.close();
+		    MyConn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 			return null;
 		}
 	
 	public Notice getPrevNotice(int id) {
+		Notice notice = null;
+		
 		String sql = "select * from "
 				+ "	(select ROW_NUMBER() over(order by n.regdate desc) rownum, n.*"
 				+ "    from ( select *  from notice where regdate >"
-				+ "		(select regdate from notice where id = 3)) n) n2"
+				+ "		(select regdate from notice where id = ?)) n) n2"
 				+ " where rownum = 1"; 
+		
+
+		String sUrl = "jdbc:mysql://localhost:3306/firstDB";
+		String sUser = "root";
+		String sPwd = "12341234";
+		 
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection MyConn = DriverManager.getConnection(sUrl, sUser, sPwd);
+			
+			PreparedStatement st = MyConn.prepareStatement(sql);
+			
+			st.setInt(1, id);
+
+			
+			ResultSet rs = st.executeQuery();
+			
+			// 하나만 읽기 떄문에 while 대신 if 사용
+			if(rs.next()) {
+			int nid = rs.getInt("ID");
+			String title = rs.getString("TITLE"); 
+			String writeid =rs.getString("WRITER_ID"); 
+			Date regdate =rs.getDate("REGDATE");
+			String hit =rs.getString("HIT"); 
+			String files =rs.getString("FILES");	
+			String content =rs.getString("CONTENT"); 
+			
+			// 만들어진 객체를 return으로 반환
+			notice = new Notice(
+					nid, 
+					title,
+					writeid,
+					regdate,
+					hit,
+					files,
+					content
+				);
+		}
+		    rs.close();
+		    st.close();
+		    MyConn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		return null;
 	}
 
 }
+
