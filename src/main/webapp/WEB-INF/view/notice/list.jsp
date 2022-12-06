@@ -155,11 +155,12 @@
 						<legend class="hidden">공지사항 검색 필드</legend>
 						<label class="hidden">검색분류</label>
 						<select name="f">
-							<option  value="title">제목</option>
-							<option  value="writerId">작성자</option>
+							<option ${(param.f == "title")?"selected":"" }  value="title">제목</option>
+							<option ${(param.f == "writer_Id")?"selected":"" } value="writer_Id">작성자</option>
 						</select> 
 						<label class="hidden">검색어</label>
-						<input type="text" name="q" value=""/>
+						<input type="text" name="q" value="${param.q }"/> <!--ex url) list?f=title&q=a -->
+						<!--f 키, q 키의 값인 title, writer_Id, ""를 넘겨주는 submit 버튼  -->
 						<input class="btn btn-search" type="submit" value="검색" />
 					</fieldset>
 				</form>
