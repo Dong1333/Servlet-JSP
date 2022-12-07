@@ -211,7 +211,7 @@
 		
 	<div>	
 		<c:if test="${startNum>1}">
-			<a class="btn btn-prev" href="?p=${startNum-1}&t=&q=">이전</a>
+			<a class="btn btn-prev" href="?p=${sstartNum-1}&t=&q=">이전</a>
 		</c:if>
 		<c:if test="${startNum<=1}">
 			<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
