@@ -120,8 +120,9 @@ public class NoticeService {
 
 			
 			ResultSet rs = st.executeQuery();
-		
-			rs.getInt("count"); // 쿼리문에 지정해준 COUNT * 대소문자 구분이 없다.
+			
+			if(rs.next())
+				count = rs.getInt("count"); // 쿼리문에 ID를 다른 명칭으로 지정한 COUNT를 의 * 대소문자 구분이 없다.
 			
 		    rs.close();
 		    st.close();
