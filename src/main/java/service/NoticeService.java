@@ -313,7 +313,7 @@ public class NoticeService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		//쿼리문 수정 중 
 		
 		return null;
 	}
